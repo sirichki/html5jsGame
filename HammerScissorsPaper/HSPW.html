@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Preproject เกมเป่ายิ้งฉุบ</title>
+</head>
+
+<body>
+<canvas id = "MyCanvas1" width="640" height="480"></canvas>
+</p>
+<button onclick="changeWindow()">
+	</br> Back to first page!
+    </br> 
+	</button>
+    </p>
+    
+    <script type="text/javascript">
+	var c=document.getElementById("MyCanvas1");
+	var ctx=c.getContext("2d");
+	var img=new Image();
+	img.onload = function(){
+		ctx.drawImage(img,0,0);
+		};	
+	img.src="images/wn.png"
+	function changeWindow(){
+		window.location="HSP1.html"
+		}
+	function closeWindow(){
+		window.close();
+	}
+	</script>
+</body>
+</html>

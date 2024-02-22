@@ -1,0 +1,251 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Preproject เกมเป่ายิ้งฉุบ</title>
+</head>
+
+<body>
+	<p id="myParagraph1"></p>
+	<canvas id = "MyCanvas1" width="640" height="480"></canvas>
+    <p>                             
+    <button onclick="SceneBattle(1)">
+	<img src="images/Ha.png">
+	</br>Hammer
+	</button>                     
+    <button onclick="SceneBattle(2)">
+	<img src="images/Sc.png">
+	</br>Scissors
+	</button>                     
+    <button onclick="SceneBattle(3)">
+	<img src="images/Pa.png">
+	</br>Paper
+	</button>
+    </p>
+    <script type="text/javascript">
+    </script>
+    <script type="text/javascript">
+	var switchx1 =1;
+	var img=new Image();
+	var img0=new Image();
+	var img1=new Image();
+	var img2=new Image();
+	var img3=new Image();
+	var imgSlp=new Image();
+	var Hm=new Image();
+	var Sc=new Image();
+	var Pp=new Image();
+	var Hm2=new Image();
+	var Sc2=new Image();
+	var Pp2=new Image();
+	var fps=50;
+	var PHP=6,Stage=0;
+	var HPe=new Array();
+		HPe[0]=3;
+		HPe[1]=4;
+		HPe[2]=5;
+		HPe[3]=6;
+	var eHP=3;
+	var c=document.getElementById("MyCanvas1");
+	var ctx=c.getContext("2d");
+	var ctxP=c.getContext("2d");
+	function setstartState2(){
+		//clearInterval(timer);
+		PHP=6;
+		timer = setInterval(setStage,100);
+	}
+	function setstartState(){
+		//clearInterval(timer);
+		if(Stage>=4){
+			window.location="HSPW.html"
+			}
+		else{
+		eHP=HPe[Stage];
+		timer = setInterval(setStage,100);}
+	}
+	setstartState();
+	function setStage(){
+		//clearInterval(timer);
+		document.getElementById("myParagraph1").innerHTML="                        Enemy"+(Stage+1)+"'s HP is : "+eHP+"                                Player's HP is : "+PHP;
+		ctx.fillStyle="Lightblue";
+		ctx.fillRect(0,0,640,480);
+		imgSlp.onload = function(){
+		ctx.drawImage(img,0,0);
+		ctx.drawImage(imgSlp,((640-400)/2),346);
+		};
+		img.src="images/frm.png";
+		imgSlp.src="images/Sip.png";
+		
+		if(Stage==0){
+			img0.onload = function(){
+		ctx.drawImage(img0,35,40);
+		};
+		img0.src="images/Hbot.png";
+		}else if(Stage==1){
+			img1.onload = function(){
+		ctx.drawImage(img1,35,40);
+		};
+		img1.src="images/Sbot.png";
+		}else if(Stage==2){
+			img2.onload = function(){
+		ctx.drawImage(img2,35,40);
+		};
+		img2.src="images/Pbot.png";
+		}else if(Stage==3){
+			img3.onload = function(){
+		ctx.drawImage(img3,35,40);
+		};
+		img3.src="images/Kbot.png";
+		}
+		clearInterval(timer);
+		if(PHP==0){
+			//-showpic you lose wait 5 sec.
+			//go to start page
+			window.location="HSPL.html"
+			}
+		else if(eHP==0){
+			//showpic you win wait 5 sec.
+			Stage+=1;
+			setstartState();
+			}
+		else{
+		 switchx1 =1;}
+			
+	}
+	img0.src="images/Hbot.png";
+	img1.src="images/Sbot.png";
+	img2.src="images/Pbot.png";
+	img3.src="images/Kbot.png";
+	//setStage();
+	
+	function showHammer(){
+		Hm.onload = function(){
+		ctx.drawImage(Hm,((640-80)/2)+40,200);
+		};
+		//timing = setTimeout(setStage,500);
+		Hm.src="images/Hm.png";
+	}
+	function showScissors(){
+		Sc.onload = function(){
+		ctx.drawImage(Sc,((640-80)/2)+40,200);
+		};
+		Sc.src="images/Sr.png";
+		
+	}
+	function showPaper(){
+		Pp.onload = function(){
+		ctx.drawImage(Pp,((640-80)/2)+40,200);
+		};
+		Pp.src="images/Pp.png";
+		
+	}
+	
+	function showHam2(){
+		Hm2.onload = function(){
+		ctxP.drawImage(Hm2,220,50);
+		};
+		//timing = setTimeout(setStage,500);
+		Hm2.src="images/Hm2.png";
+	}
+	function showScis2(){
+		Sc2.onload = function(){
+		ctxP.drawImage(Sc2,220,50);
+		};
+		Sc2.src="images/Sr2.png";
+		
+	}
+	function showPap2(){
+		Pp2.onload = function(){
+		ctxP.drawImage(Pp2,220,50);
+		};
+		Pp2.src="images/Pp2.png";
+		
+	}
+	
+	function SceneBattle(intabc){
+		if(switchx1==1){
+		switchx1 =0;
+		if(intabc==1){
+			showHammer();}
+		else if(intabc==2){
+			showScissors();}	
+		else if(intabc==3){
+			showPaper();}
+		
+		var calcu = Math.floor((Math.random()*100)+1);
+		if(Stage==0){
+			if(calcu>=91){
+				showPap2();
+				if(intabc==2){eHP-=1;}
+				if(intabc==1){PHP-=1;}
+			}else if(calcu>=61&&calcu<=90){
+				showScis2();
+				if(intabc==1){eHP-=1;}
+				if(intabc==3){PHP-=1;}
+			}else{
+				showHam2();
+				if(intabc==3){eHP-=1;}
+				if(intabc==2){PHP-=1;}
+			}
+		}
+		else if(Stage==1){
+			if(calcu>=91){
+				showHam2();
+				if(intabc==3){eHP-=1;}
+				if(intabc==2){PHP-=1;}
+			}else if(calcu>=61&&calcu<=90){
+				showPap2();
+				if(intabc==2){eHP-=1;}
+				if(intabc==1){PHP-=1;}
+			}else{
+				showScis2();
+				if(intabc==1){eHP-=1;}
+				if(intabc==3){PHP-=1;}
+			}
+		}
+		else if(Stage==2){
+			if(calcu>=91){
+				showScis2();
+				if(intabc==1){eHP-=1;}
+				if(intabc==3){PHP-=1;}
+			}else if(calcu>=61&&calcu<=90){
+				showHam2();
+				if(intabc==3){eHP-=1;}
+				if(intabc==2){PHP-=1;}
+			}else{
+				showPap2();
+				if(intabc==2){eHP-=1;}
+				if(intabc==1){PHP-=1;}
+			}
+		}
+		if(Stage==3){
+			if(calcu>=67){
+				showPap2();
+				if(intabc==2){eHP-=1;}
+				if(intabc==1){PHP-=1;}
+			}else if(calcu>=34&&calcu<=66){
+				showScis2();
+				if(intabc==1){eHP-=1;}
+				if(intabc==3){PHP-=1;}
+			}else{
+				showHam2();
+				if(intabc==3){eHP-=1;}
+				if(intabc==2){PHP-=1;}
+			}
+		}
+		timer = setInterval(setStage,2000);
+		
+		
+		}
+		
+	}
+	function reHP(){
+		PHP=6;
+	/*<button onclick="reHP()">
+	</br>REHP!
+	</button>*///copy to line 25-27
+		}
+	</script>
+    
+</body>
+</html>

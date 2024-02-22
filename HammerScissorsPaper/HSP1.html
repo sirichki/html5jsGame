@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Preproject เกมเป่ายิ้งฉุบ</title>
+</head>
+
+<body>
+<p id="myParagraph1">         Preproject เกมเป่ายิ้งฉุบ (hammer paper scissors)</p>
+<canvas id = "MyCanvas1" width="640" height="480"></canvas>
+</p>
+<button onclick="changeWindow()">
+	</br> Stat Game !
+    </br> 
+	</button>
+    <button onclick="closeMyWindow()">
+	</br> Close Page!
+    </br> 
+	</button>
+    </p>
+    
+    <script type="text/javascript">
+	var c=document.getElementById("MyCanvas1");
+	var ctx=c.getContext("2d");
+	var img=new Image();
+	img.onload = function(){
+		ctx.drawImage(img,0,0);
+		};	
+	img.src="images/ht.png"
+	function changeWindow(){
+		window.location="HSP2.html"
+		}
+		
+	function closeMyWindow(){
+		window.close("HSP1.html");
+	}
+	</script>
+</body>
+</html>
