@@ -1,0 +1,310 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Run Soldier Run</title>
+</head>
+
+<body>
+<canvas id = "MyCanvas1" width="480" height="320" class="center"></canvas>
+<style>
+.center{
+	margin: auto;
+	position: absolute;
+	top: 0px;
+	bottom: 0px;
+	left: 0px;
+	right: 0px;
+}
+</style>
+
+<script type="text/javascript">	
+
+var fps =50;		// กำหนดเฟรมเรต
+var timing=0;
+var ctxP=document.getElementById('MyCanvas1').getContext('2d');
+var imgBg1 = 	new Image();	
+var imgBg2 = 	new Image();
+var imgBg3 = 	new Image();
+var imgBg4 = 	new Image();
+var imgActor = new Image();
+var imgE1 = 	new Image();
+var imgE2 = 	new Image();
+var imgE3 = 	new Image();
+var keyframe =1;
+var delay = 6;
+var count = 0;
+//var YAct = 126;
+var jum=0;
+var i=0;
+var keyenable=1;
+var keyb=0;
+var timing2=0;
+var delayjum = 72;
+var Ex1 = 0;
+var Ex2 = 0;
+var Ex3 = 0;
+var Ey1 = 1;
+var Ey2 = 1;
+var Ey3 = 1;
+var Ep2 = 1;
+var xDie1 = 0;
+var xDie2 = 0;
+var xDie3 = 0;
+var yDie1 = 0;
+var yDie2 = 0;
+var yDie3 = 0;
+var enemyarrive =0;
+var Etype=0;
+var Etype2=0;
+var speed=2;
+var deadstatus=0;
+var randx = 200;
+var timmod = 960;
+var StackTimeJump = 14;
+var Glavity = 2;
+var timejump = StackTimeJump;
+var Yjum = (StackTimeJump*StackTimeJump)/Glavity;
+var YAct = 224-Yjum;
+
+
+
+imgBg1.src = 'images/BG1.png';	// โหลดฉากหลัง 
+imgBg2.src = 'images/BG1.png';	// โหลดฉากหลัง 
+imgBg3.src = 'images/BG2.png';	// โหลดฉากหลัง
+imgBg4.src = 'images/BG3.png';
+imgE1.src = 'images/E1.png';
+imgE2.src = 'images/E2.png';
+imgE3.src = 'images/E3.png';
+imgActor.src = 'images/sorun.png';
+
+WhileW = setInterval(waitG,1000/fps);
+
+function waitG() {
+	document.addEventListener('keydown',checkKeyDown,false);
+	drawBg(timing);
+	drawBg4();
+	drawActor(1,48,224);
+	keyb=3;
+}
+	
+function startG(){
+	clearInterval(WhileW);
+	//clearInterval(WhileRun);
+	timing=0;
+	keyframe =1;
+	count = 0;
+	Yjum = (StackTimeJump*StackTimeJump)/Glavity;
+	YAct = 224-Yjum;
+	jum=0;
+	i=0;
+	keyenable=1;
+	keyb=0;
+	timing2=0;
+	delayjum = 72;
+	Etype=0;
+	Etype2=0;
+	randx = 240;
+	timejump = StackTimeJump;
+	WhileRun = setInterval(Update,1000/fps);
+	speed=2;
+	}
+
+function Update() {
+	document.addEventListener('keydown',checkKeyDown,false);
+	//document.addEventListener('keyup',checkKeyUp,false);
+
+	timing+=2;
+	//speed=Math.floor((timing/2000)+1);
+	checkActorsStatus();
+	drawBg(timing);
+	drawEnemy1(timing);
+	drawEnemy2(timing);
+	drawActor(keyframe,48,YAct+Yjum);
+	drawText(Math.round(timing),368,22);
+	chcekDie(timing);
+}	
+
+
+//======================================================//
+function checkKeyDown (e) {
+	var key=e.keyCode;
+	//alert(key);
+	if(keyb!=3){
+	if(key==38){
+		if(keyenable==1){
+		keyenable=0;
+		keyb=1;
+		}
+	}
+	if(key==39){
+		if(keyenable==1){
+		keyenable=0;
+		keyb=3;
+		}
+	}
+	}
+	else{
+		if(key==13){//enter=13
+			startG();
+			}
+	}
+}
+/*function checkKeyUp (e) {
+	var key=e.keyCode;
+	if(key==38){
+		if(keyenable==1){
+		keyb=0;
+	}
+	}
+}//*/
+//=======================================================//
+function drawBg(timing) {
+	var xxx = 0-((timing*speed)%480);
+	ctxP.drawImage(imgBg1,0,0,120,80,xxx,0,480,320);
+	ctxP.drawImage(imgBg2,0,0,120,80,xxx+480,0,480,320);
+	ctxP.drawImage(imgBg3,(0+(timing%3840))/8,0,120,80,0,0,480,320);
+}
+function drawBg4(){
+	ctxP.drawImage(imgBg4,0,0,120,80,0,0,480,320);
+	}
+function drawActor(keyframe,posX,posY){	
+	ctxP.drawImage(imgActor,((keyframe-1)*24),0,24,24,posX,posY,48,48);	
+}
+function drawText(txt,posX,posY){
+	var score;
+	score = Math.floor(txt/10);
+	ctxP.fillStyle = "white";
+	ctxP.font="18px Comic Sans MS";
+	ctxP.fillText("Score : "+score,posX,posY);	
+}
+
+function drawEnemy(){}
+//======================================================//
+
+
+function checkActorsStatus() {
+	if(keyb==0){
+	count++;
+		if(count%delay==0){keyframe+=1;}
+		if(keyframe>=4){keyframe=2;}
+	}
+	
+	else if(keyb==1){
+		keyframe=1;
+		jumpup();
+	}
+	else if(keyb==2){
+		falldown();
+	}
+	else if(keyb==3){
+		keyframe=4;
+		clearInterval(WhileRun);
+		clearInterval(WhileRun);
+		clearInterval(WhileRun);
+	}	
+}
+function jumpup(){
+	var valulula;
+	//keyenable=1;
+	if(timejump>=0){
+	valulula = timejump/Glavity;
+	Yjum = Glavity*((valulula)*(valulula));
+	timejump-=1;
+	}
+	else
+	{
+	keyb=2;
+	}
+}
+function falldown(){
+	var valulula;
+	if(timejump<=StackTimeJump){
+	valulula = timejump/Glavity;
+	Yjum = Glavity*((valulula)*(valulula));
+	//Yjum = (2*(timejump*timejump));
+	timejump+=1;
+	}
+	else{
+	timejump-=1;
+	keyenable=1;
+	keyb=0;
+	}
+}
+
+function drawEnemy1(timing){
+	var xxx = -480-((timing*speed)%timmod);
+	if(xxx==-480){
+	Etype = Math.floor((Math.random()*3));
+	randx = 160+(Math.floor((Math.random()*310)+1));
+	if((timing%1920)==0){if(speed<4.5){speed+=0.5;}}
+	}
+	if(Etype==0){
+		xDie1=10;yDie1=28;
+		ctxP.drawImage(imgE1,0,0,5,14,xxx+timmod,244,10,28);
+		Ex1=(xxx+timmod);
+		}
+	if(Etype==1){
+		xDie1=22;yDie1=32;
+		ctxP.drawImage(imgE2,0,0,11,16,xxx+timmod,240,22,32);
+		Ex1=(xxx+timmod);
+		}
+	if(Etype==2){
+		xDie1=34;yDie1=36;
+		ctxP.drawImage(imgE3,0,0,17,18,xxx+timmod,236,34,36);
+		Ex1=(xxx+timmod);
+		}
+}
+function drawEnemy2(timing){
+	var xxx = -480-((timing*speed)%timmod);
+	if(xxx==-480){
+	Etype2 = Math.floor((Math.random()*3));
+	}
+	Ep2=Ex1;
+	if(Etype2==0){
+		xDie2=10;yDie2=28;
+		ctxP.drawImage(imgE1,0,0,5,14,Ep2+randx,244,10,28);
+		Ex2=(Ep2+randx);
+		}
+	if(Etype2==1){
+		xDie2=22;yDie2=32;
+		ctxP.drawImage(imgE2,0,0,11,16,Ep2+randx,240,22,32);
+		Ex2=(Ep2+randx);
+		}
+	if(Etype2==2){
+		xDie2=34;yDie2=36;
+		ctxP.drawImage(imgE3,0,0,17,18,Ep2+randx,236,34,36);
+		Ex2=(Ep2+randx);
+		}
+}
+
+function chcekDie(timer){
+	if((Ex1<=90)&&((Ex1+xDie1)>=54)&&((YAct+48+Yjum)>(276-yDie1))){
+		keyenable=0;
+		keyframe=4;
+		keyb=3;
+		clearInterval(WhileRun);
+		drawBg(timing);
+	drawEnemy1(timing);
+	drawEnemy2(timing);
+	drawActor(keyframe,48,YAct+Yjum);
+	drawText(Math.round(timing),368,22);
+	drawBg4();
+		}
+	if((Ex2<=90)&&((Ex2+xDie2)>=54)&&((YAct+48+Yjum)>(276-yDie2))){
+		keyenable=0;
+		keyframe=4;
+		keyb=3;
+		clearInterval(WhileRun);
+		drawBg(timing);
+	drawEnemy1(timing);
+	drawEnemy2(timing);
+	drawActor(keyframe,48,YAct+Yjum);
+	drawText(Math.round(timing),368,22);
+	drawBg4();
+		}
+}
+//======================================================//
+</script>
+</body>
+</html>
